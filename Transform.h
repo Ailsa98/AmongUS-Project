@@ -12,6 +12,7 @@
 class Transform : public Node {
 private:
     glm::mat4 T;
+    glm::mat4 newT;
     std::vector<Node *> children;
 
 public:
@@ -21,6 +22,7 @@ public:
     void draw(GLuint shaderProgram, glm::mat4 C);
     void update(glm::mat4 C);
     void addChild(Node * child);
+    glm::mat4 getMatrix(){ return newT; }
 };
 
 #endif

@@ -14,6 +14,8 @@
 #include "Camera.h"
 #include "Astronaut.h"
 #include "Lobby.h"
+#include "BoundingPlane.h"
+#include "BoundingSphere.h"
 
 class Window {
 public:
@@ -85,6 +87,15 @@ public:
     // Movement handle
     static std::vector<GLfloat> faceDir;
     static std::vector<bool> isMove;
+    static std::vector<glm::vec3> velocity;
+    static int currAstro;
+    
+    // bounds
+    static std::vector<BoundingSphere*> astroSpheres;
+    static std::vector<BoundingPlane*> lobPlanes;
+    static std::vector<BoundingSphere*> lobSpheres;
+    static BoundingSphere* bsLeft, *bsRight;
+    static BoundingPlane* top, *bottom, *left, *right, *ltCorner, *rtCorner;
 
     // Constructors and Destructors
     static bool initializeProgram();
@@ -111,7 +122,10 @@ public:
     
     // Collision
     static bool checkCollision(int curr);
+    static void handleCollision(int curr, bool initialize = false);
     
+    // Movement
+    static void move(int curr);
     
 };
 

@@ -6,6 +6,7 @@
 
 Transform::Transform(glm::mat4 M) {
     T = M;
+    newT = T;
 }
 
 Transform::~Transform() {
@@ -16,8 +17,9 @@ Transform::~Transform() {
 }
 
 void Transform::draw(GLuint shaderProgram, glm::mat4 C) {
+    newT = C * T;
     for (int i = 0; i < children.size(); i++){
-        children[i]->draw(shaderProgram, C * T);
+        children[i]->draw(shaderProgram, newT);
     }
 }
 
