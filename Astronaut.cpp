@@ -9,19 +9,19 @@ Astronaut::Astronaut(std::string directory) {
     
     // r = 10^-39 -> dist > r after a move
     //GLfloat r = astroStill->getMaxDist();
-    bs = new BoundingSphere(0.8);
+    //bs = new BoundingSphere(0.8);
 }
 
 Astronaut::~Astronaut() {
     delete astroStill;
     delete astroRight;
     delete astroLeft;
-    delete bs;
+    //delete bs;
 }
 
 void Astronaut::draw(GLuint shader, glm::mat4 C) {
     astro[currAstro]->draw(shader, C);
-    bs->draw(C);
+    //bs->draw(C);
 }
 
 void Astronaut::setColor(Material*& col) {
@@ -40,5 +40,5 @@ void Astronaut::update(glm::mat4 C) {
     astroStill->update(C);
     astroRight->update(C);
     astroLeft->update(C);
-    bs->update(C);
+    //bs->update(C);
 };

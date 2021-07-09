@@ -3,7 +3,7 @@
 
 #include "BoundingSphere.h"
 
-class BoundingPlane {
+class BoundingPlane : public Node {
 private:
     glm::vec3 normal;
     glm::vec3 point;
@@ -12,6 +12,7 @@ private:
     glm::vec3 newPt;
 
 public:
+    bool print = false;
     BoundingPlane(glm::vec3 norm, glm::vec3 pt) : normal(norm), point(pt) {
         newPt = point;
         newNorm = normal;
@@ -21,8 +22,10 @@ public:
     
     GLfloat collide(BoundingSphere* bs) {
         float dist = glm::dot(bs->getPos(), newNorm) - distance;
-        //std::cout << "dist: " << dist << std::endl;
-        //std::cout << "r: " << bs->getRadius() << std::endl;
+        if (print) {
+            std::cout << "dist: " << dist << std::endl;
+            std::cout << "r: " << bs->getRadius() << std::endl;
+        }
 
         return dist - bs->getRadius();
     };
@@ -44,7 +47,7 @@ public:
         point = glm::vec3(C * glm::vec4(point, 1.0));
         distance = glm::dot(point, normal);
     };
-    void draw(glm::mat4 C) {
+    void draw(GLuint shaderProgram, glm::mat4 C) {
         newNorm = glm::normalize(glm::vec3(C * glm::vec4(normal, 0)));
         newPt = glm::vec3(C * glm::vec4(point, 1));
         distance = glm::dot(newPt, newNorm);

@@ -3,6 +3,8 @@
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
 
+#define pi 3.1415926
+
 // Window Properties
 int Window::width;
 int Window::height;
@@ -19,9 +21,6 @@ Transform * Window::camCtrl;
 Transform * Window::lob;
 std::vector<Transform*> Window::astroRot = std::vector<Transform*>(12);
 std::vector<Transform*> Window::astroMov = std::vector<Transform*>(12);
-
-// Movement
-float Window::x = 0;
 
 // Trackball
 bool Window::leftPress = false;
@@ -75,6 +74,7 @@ std::vector<GLfloat> Window::faceDir(12, 0);
 std::vector<bool> Window::isMove (12, 0);
 std::vector<glm::vec3> Window::velocity(12);
 int Window::currAstro = 0;
+GLfloat Window::userSpeed = 0.4;
 
 // Bounds
 std::vector<BoundingSphere*> Window::astroSpheres(12);
@@ -125,24 +125,45 @@ bool Window::initializeObjects() {
     lobby->setTexture(loadTexture(directory + "amongus_lobby.png"));
     lobby->useTex(useToon);
     //lobby->useToon(0);
+    model = glm::rotate(glm::mat4(1), glm::radians(90.f), glm::vec3(1, 0, 0));
+    model = glm::rotate(model, glm::radians(-90.f), glm::vec3(0, 0, 1));
+    model = glm::translate(model, glm::vec3(0, 0, -5));
+    model = glm::scale(model, glm::vec3(1.1));
+    lobby->update(model);
     
-    model = glm::rotate(glm::mat4(1), glm::radians(-90.f), glm::vec3(0, 0, 1));
+    //model = glm::rotate(glm::mat4(1), glm::radians(-90.f), glm::vec3(0, 0, 1));
     // 0.35 -> attach the lower floor
-    model = glm::translate(model, glm::vec3(0, 1, 0));
+    model = glm::translate(glm::mat4(1), glm::vec3(0, 1, 0));
     astroSys = new Transform(model);
     
     // Initialize the system
     for (int i = 0; i < 12; ++i) {
         astroRot[i] = new Transform(glm::mat4(1));
         astroMov[i] = new Transform(glm::mat4(1));
-        //astroSpheres[i]
+        astroSpheres[i] = new BoundingSphere(0.8);
         astros[i] = new Astronaut(directory);
         astros[i]->setColor(astroColors[i]);
         astros[i]->useToon(useToon);
         astroRot[i]->addChild(astros[i]);
         astroMov[i]->addChild(astroRot[i]);
+        astroMov[i]->addChild(astroSpheres[i]);
         astroSys->addChild(astroMov[i]);
     }
+    
+    // bounds
+    top = new BoundingPlane(glm::vec3(0, -1, 0), glm::vec3(0, 0, 0));
+    bottom = new BoundingPlane(glm::vec3(0, 1, 0), glm::vec3(0, -18, 0));
+    left = new BoundingPlane(glm::vec3(0, 0, -1), glm::vec3(0, 0, 17.5));
+    right = new BoundingPlane(glm::vec3(0, 0, 1), glm::vec3(0, 0, -17.5));
+    ltCorner = new BoundingPlane(glm::normalize(glm::vec3(0, 1, -1)), glm::vec3(0, -13, 17.5));
+    rtCorner = new BoundingPlane(glm::normalize(glm::vec3(0, 1, 1)), glm::vec3(0, -13, -17.5));
+    lobPlanes = { top, bottom, left, right, ltCorner, rtCorner };
+    //rtCorner->print = true;
+    
+    bsLeft = new BoundingSphere(2.5, glm::vec3(1, -7.5, 10.5));
+    bsRight = new BoundingSphere(2.5, glm::vec3(1, -4, -11.5));
+    lobSpheres = { bsLeft, bsRight };
+    //bsLeft->print = true;
     
     //model = glm::rotate(glm::mat4(1), glm::radians(90.f), glm::vec3(0, 1, 0));
     
@@ -155,7 +176,10 @@ bool Window::initializeObjects() {
         else {
             faceDir[i] = rand() % 360;
         }
+        velocity[i] = glm::vec3(0, -sin(glm::radians(faceDir[i])), cos(glm::radians(faceDir[i])));
     }
+    
+    //faceDir[0] = 30;
 
     //std::cout << faceDir[currAstro] << std::endl;
     
@@ -164,27 +188,26 @@ bool Window::initializeObjects() {
     // Randomize the initial position
     // 14 - - -14
     //      |
-    //     -15
+    //     -16
     srand((unsigned)time(NULL));
     for (int i = 0; i < 12; ++i) {
         astroRot[i]->update(glm::rotate(glm::mat4(1), glm::radians(faceDir[i]), glm::vec3(0, 1, 0)));
+        astroRot[i]->update(glm::rotate(glm::mat4(1), glm::radians(-90.f), glm::vec3(0, 0, 1)));
         x = rand() % 1600;
         x = x / 100;
         y = rand() % 2800;
         y = y / 100 - 14;
-        astroMov[i]->update(glm::translate(glm::mat4(1), glm::vec3(x, 0, y)));
+        astroMov[i]->update(glm::translate(glm::mat4(1), glm::vec3(0, -x, y)));
         //handleCollision(i, true);
     }
     
     // Build relationships
     world = new Transform(glm::mat4(1));
     
-    model = glm::rotate(glm::mat4(1), glm::radians(90.f), glm::vec3(1, 0, 0));
-    model = glm::rotate(model, glm::radians(-90.f), glm::vec3(0, 0, 1));
-    model = glm::translate(model, glm::vec3(0, 0, -5));
-    model = glm::scale(model, glm::vec3(1.1));
-    lob = new Transform(model);
+    lob = new Transform(glm::mat4(1));
     lob->addChild(lobby);
+    lob->addChild(top);
+    lob->addChild(bsLeft);
     
     world->addChild(currLight);
     world->addChild(camera);
@@ -192,6 +215,7 @@ bool Window::initializeObjects() {
     world->addChild(lob);
     
     //astros[0]->getBS()->printPos = true;
+    handleCollision(0);
     
     return true;
 }
@@ -277,7 +301,11 @@ void Window::resizeCallback(GLFWwindow* window, int width, int height) {
 }
 
 void Window::idleCallback() {
-
+    
+    for (int i = 1; i < 4; ++i) {
+        handleCollision(i);
+        astroMov[i]->update(glm::translate(glm::mat4(1), velocity[i] * 0.05f));
+    }
 }
 
 void Window::displayCallback(GLFWwindow* window) {
@@ -314,99 +342,118 @@ void Window::keyCallback(GLFWwindow* window, int key, int scancode, int action, 
                 break;
                 
             case GLFW_KEY_UP:
-                astroRot[currAstro]->update(glm::rotate(glm::mat4(1), glm::radians(270.f - faceDir[currAstro]), glm::vec3(0, 1, 0)));
+                astroRot[currAstro]->update(glm::rotate(glm::mat4(1), glm::radians(270.f - faceDir[currAstro]), glm::vec3(1, 0, 0)));
                 faceDir[currAstro] = 270;
+                velocity[currAstro] = glm::vec3(0, -sin(glm::radians(faceDir[currAstro])), cos(glm::radians(faceDir[currAstro])));
 
                 //astros[0]->getBS()->printPos();
                 
-                astroMov[currAstro]->update(glm::translate(glm::mat4(1), glm::vec3(-0.2, 0, 0)));
+                astroMov[currAstro]->update(glm::translate(glm::mat4(1), glm::vec3(0, userSpeed, 0)));
+                /*
+                astroMov[currAstro]->update(glm::translate(glm::mat4(1), glm::vec3(0,
+                                                                                   -sin(glm::radians(faceDir[currAstro])),
+                                                                                   cos(glm::radians(faceDir[currAstro]))) * userSpeed));
+                 */
                 world->draw(phongShader, glm::mat4(1));
                 
-                /*
                 if (checkCollision(currAstro)) {
-                    astroMov[currAstro]->update(glm::translate(glm::mat4(1), glm::vec3(0.2, 0, 0)));
+                    astroMov[currAstro]->update(glm::translate(glm::mat4(1), glm::vec3(0, -userSpeed, 0)));
                 }
-                */
-                handleCollision(currAstro);
+                
+                //handleCollision(currAstro);
                 
                 /*
-                astroMov[currAstro]->update(glm::translate(glm::mat4(1), glm::vec3(sin(glm::radians(faceDir[currAstro])),
-                                                                                   0,
-                                                                                   cos(glm::radians(faceDir[currAstro]))) * 0.2f));
+                astroMov[currAstro]->update(glm::translate(glm::mat4(1), glm::vec3(0,
+                                                                                   -sin(glm::radians(faceDir[currAstro])),
+                                                                                   cos(glm::radians(faceDir[currAstro]))) * userSpeed));
+                
                 world->draw(phongShader, glm::mat4(1));
       
                 if (checkCollision(currAstro)) {
                     astroMov[currAstro]->update(glm::translate(glm::mat4(1), glm::vec3(-sin(glm::radians(faceDir[currAstro])),
                                                                                        0,
-                                                                                       -cos(glm::radians(faceDir[currAstro]))) * 0.2f));
+                                                                                       -cos(glm::radians(faceDir[currAstro]))) * userSpeed));
                 }
                  */
                 
                 break;
                 
             case GLFW_KEY_DOWN:
-                astroRot[currAstro]->update(glm::rotate(glm::mat4(1), glm::radians(90.f - faceDir[currAstro]), glm::vec3(0, 1, 0)));
+                astroRot[currAstro]->update(glm::rotate(glm::mat4(1), glm::radians(90.f - faceDir[currAstro]), glm::vec3(1, 0, 0)));
                 faceDir[currAstro] = 90;
+                velocity[currAstro] = glm::vec3(0, -sin(glm::radians(faceDir[currAstro])), cos(glm::radians(faceDir[currAstro])));
 
                 //astros[0]->getBS()->printPos();
                 //handleCollision(currAstro);
                 
-                astroMov[currAstro]->update(glm::translate(glm::mat4(1), glm::vec3(0.2, 0, 0)));
+                astroMov[currAstro]->update(glm::translate(glm::mat4(1), glm::vec3(0, -userSpeed, 0)));
+                /*
+                astroMov[currAstro]->update(glm::translate(glm::mat4(1), glm::vec3(0,
+                                                                                   -sin(glm::radians(faceDir[currAstro])),
+                                                                                   cos(glm::radians(faceDir[currAstro]))) * userSpeed));
+                 */
                 world->draw(phongShader, glm::mat4(1));
                 
-                /*
+                
                 if (checkCollision(currAstro)) {
-                    astroMov[currAstro]->update(glm::translate(glm::mat4(1), glm::vec3(-0.2, 0, 0)));
+                    astroMov[currAstro]->update(glm::translate(glm::mat4(1), glm::vec3(0, userSpeed, 0)));
                 }
-                */
-                handleCollision(currAstro);
+                
+                //handleCollision(currAstro);
                 
                 break;
                 
             case GLFW_KEY_LEFT:
-                astroRot[currAstro]->update(glm::rotate(glm::mat4(1), glm::radians(0.f - faceDir[currAstro]), glm::vec3(0, 1, 0)));
+                astroRot[currAstro]->update(glm::rotate(glm::mat4(1), glm::radians(0.f - faceDir[currAstro]), glm::vec3(1, 0, 0)));
                 faceDir[currAstro] = 0;
+                velocity[currAstro] = glm::vec3(0, -sin(glm::radians(faceDir[currAstro])), cos(glm::radians(faceDir[currAstro])));
 
                 //astros[0]->getBS()->printPos();
                 //handleCollision(currAstro);
 
-                astroMov[currAstro]->update(glm::translate(glm::mat4(1), glm::vec3(0, 0, 0.2)));
+                astroMov[currAstro]->update(glm::translate(glm::mat4(1), glm::vec3(0, 0, userSpeed)));
+                /*
+                astroMov[currAstro]->update(glm::translate(glm::mat4(1), glm::vec3(0,
+                                                                                   -sin(glm::radians(faceDir[currAstro])),
+                                                                                   cos(glm::radians(faceDir[currAstro]))) * userSpeed));
+                 */
                 world->draw(phongShader, glm::mat4(1));
                 
-                /*
                 if (checkCollision(currAstro)) {
-                    astroMov[currAstro]->update(glm::translate(glm::mat4(1), glm::vec3(0, 0, -0.2)));
+                    astroMov[currAstro]->update(glm::translate(glm::mat4(1), glm::vec3(0, 0, -userSpeed)));
                 }
-                */
-                handleCollision(currAstro);
+                
+                //handleCollision(currAstro);
                 
                 break;
                 
             case GLFW_KEY_RIGHT:
-                astroRot[currAstro]->update(glm::rotate(glm::mat4(1), glm::radians(180.f - faceDir[currAstro]), glm::vec3(0, 1, 0)));
+                astroRot[currAstro]->update(glm::rotate(glm::mat4(1), glm::radians(180.f - faceDir[currAstro]), glm::vec3(1, 0, 0)));
                 faceDir[currAstro] = 180;
-
+                velocity[currAstro] = glm::vec3(0, -sin(glm::radians(faceDir[currAstro])), cos(glm::radians(faceDir[currAstro])));
+                
                 //astros[0]->getBS()->printPos();
                 //handleCollision(currAstro);
 
-                astroMov[currAstro]->update(glm::translate(glm::mat4(1), glm::vec3(0, 0, -0.2)));
+                astroMov[currAstro]->update(glm::translate(glm::mat4(1), glm::vec3(0, 0, -userSpeed)));
+                /*
+                astroMov[currAstro]->update(glm::translate(glm::mat4(1), glm::vec3(0,
+                                                                                   -sin(glm::radians(faceDir[currAstro])),
+                                                                                   cos(glm::radians(faceDir[currAstro]))) * userSpeed));
+                 */
                 world->draw(phongShader, glm::mat4(1));
                 
-                /*
                 if (checkCollision(currAstro)) {
-                    astroMov[currAstro]->update(glm::translate(glm::mat4(1), glm::vec3(0, 0, 0.2)));
+                    astroMov[currAstro]->update(glm::translate(glm::mat4(1), glm::vec3(0, 0, userSpeed)));
                 }
-                */
-                handleCollision(currAstro);
+                
+                //handleCollision(currAstro);
                 
                 break;
                 
             default:
                 break;
         }
-    }
-    if (action == GLFW_PRESS || action == GLFW_REPEAT) {
-
     }
 }
 
@@ -515,96 +562,115 @@ unsigned int Window::loadTexture(std::string texLocation) {
 }
 
 bool Window::checkCollision(int curr) {
-    for (auto bp : *lobby->getBP()) {
-        if (bp->isCollide(astros[curr]->getBS())) {
+    for (auto bp : lobPlanes) {
+        if (bp->isCollide(astroSpheres[curr])) {
             return true;
         }
     }
-    for (auto bs : *lobby->getBS()) {
-        if (bs->isCollide(astros[curr]->getBS())) {
+    for (auto bs : lobSpheres) {
+        if (bs->isCollide(astroSpheres[curr])) {
             return true;
         }
     }
-    /*
+    
     for (int i = 0; i < 12; ++i) {
         if (i == curr)  continue;
-        if (astros[i]->getBS()->isCollide(astros[curr]->getBS())) {
+        if (astroSpheres[i]->isCollide(astroSpheres[curr])) {
             return true;
         }
     }
-     */
+
     return false;
 }
 
 void Window::handleCollision(int curr, bool initialize){
     
     auto handleBP = [&](BoundingPlane* bp) -> glm::vec3 {
-        glm::vec3 dir = glm::vec3(sin(glm::radians(faceDir[curr])), 0, cos(glm::radians(faceDir[curr])));
+        glm::vec3 dir = glm::normalize(velocity[curr]);
         // use normal in the same coordinates as direction
-        glm::vec3 norm = glm::vec4(bp->getNorm(), 0) * glm::rotate(glm::mat4(1), glm::radians(-90.f), glm::vec3(0, 0, 1));
+        //dir = glm::rotate(glm::mat4(1), glm::radians(90.f), glm::vec3(0, 0, 1)) * glm::vec4(dir, 0);
+        
+        //glm::vec3 norm = glm::vec4(bp->getNorm(), 0) * glm::rotate(glm::mat4(1), glm::radians(-90.f), glm::vec3(0, 0, 1));
+        glm::vec3 norm = bp->getNorm();
         glm::vec3 newDir = glm::reflect(dir, norm);
+        //newDir = glm::rotate(glm::mat4(1), glm::radians(-90.f), glm::vec3(0, 0, 1)) * glm::vec4(newDir, 0);
+        /*
         std::cout << "dir: " << dir.x << " " << dir.y << " " << dir.z << std::endl;
         std::cout << "normal: " << norm.x << " " << norm.y << " " << norm.z << std::endl;
         std::cout << "newDir: " << newDir.x << " " << newDir.y << " " << newDir.z << std::endl;
+         */
         return newDir;
     };
 
     auto handleBS = [&](BoundingSphere* bs) -> glm::vec3 {
-        glm::vec3 dir = glm::vec3(sin(glm::radians(faceDir[curr])), 0, cos(glm::radians(faceDir[curr])));
-        glm::vec3 normOrig = astros[curr]->getBS()->getPos() - bs->getPos();
-        std::cout << "bs: " << bs->getPos().x << " " << bs->getPos().y << " " << bs->getPos().z <<std::endl;
-        std::cout << "astro: " << astros[curr]->getBS()->getPos().x << " " << astros[curr]->getBS()->getPos().y << " " << astros[curr]->getBS()->getPos().z << std::endl;
-        //normOrig = glm::normalize(normOrig);
-        glm::vec3 norm = glm::vec4(normOrig, 0) * glm::rotate(glm::mat4(1), glm::radians(-90.f), glm::vec3(0, 0, 1));
-        norm = glm::normalize(glm::vec3(0, norm.y, norm.z));
+        glm::vec3 dir = glm::normalize(velocity[curr]);
+        glm::vec3 diff = astroSpheres[curr]->getPos() - bs->getPos();
+        diff.x = 0;
+        /*
+        std::cout << "bs: " << bs->getPos().x << " " << bs->getPos().y << " " << bs->getPos().z << std::endl;
+        std::cout << "astro: " << astroSpheres[curr]->getPos().x << " " << astroSpheres[curr]->getPos().y << " " << astroSpheres[curr]->getPos().z << std::endl;
+         */
+        //diff = glm::normalize(diff);
+        //glm::vec3 norm = glm::vec4(diff, 0) * glm::rotate(glm::mat4(1), glm::radians(90.f), glm::vec3(0, 1, 0));
+        //norm = glm::normalize(glm::vec3(0, norm.y, norm.z));
+        glm::vec3 norm = glm::normalize(diff);
         glm::vec3 newDir = glm::reflect(dir, norm);
-        newDir.y = 0;
+        //newDir.y = 0;
+        /*
         std::cout << "dir: " << dir.x << " " << dir.y << " " << dir.z << std::endl;
-        std::cout << "normal original: " << normOrig.x << " " << normOrig.y << " " << normOrig.z << std::endl;
+        std::cout << "diff: " << diff.x << " " << diff.y << " " << diff.z << std::endl;
         std::cout << "normal: " << norm.x << " " << norm.y << " " << norm.z << std::endl;
         std::cout << "newDir: " << newDir.x << " " << newDir.y << " " << newDir.z << std::endl;
+         */
         return newDir;
     };
     
     GLfloat diff;
     glm::vec3 newDir;
     glm::vec3 newTrans;
-    GLfloat angle;
-    for (auto bp : *lobby->getBP()) {
-        diff = bp->collide(astros[curr]->getBS());
+    GLfloat angle1, angle2, angle;
+    for (auto bp : lobPlanes) {
+        diff = bp->collide(astroSpheres[curr]);
         if (diff <= 0) {
             newDir = handleBP(bp);
             newTrans = newDir * (0.01f - diff);
             //std::cout << "newTrans: " << newTrans.x << " " << newTrans.y << " " << newTrans.z << std::endl;
             astroMov[curr]->update(glm::translate(glm::mat4(1), newTrans));
-            // asin(0) = 0 / 180;
-            if (abs(newDir.x) < 0.00001) angle = acos(newDir.z);
-            else angle = asin(newDir.x);
+            // asin(0) = 0 / 180, acos(0) = +-90
+            angle1 = asin(-newDir.y);
+            angle2 = acos(newDir.z);
+            if (abs(angle1 - angle2) < 0.1 || abs(angle1 + angle2) < 0.1) angle = angle1;
+            else angle = pi - angle1;
+            
             //std::cout << "bp: faceDir: " << faceDir[curr] << " diff: " << diff << std::endl;
-            astroRot[curr]->update(glm::rotate(glm::mat4(1), angle - glm::radians(faceDir[curr]), glm::vec3(0, 1, 0)));
+            astroRot[curr]->update(glm::rotate(glm::mat4(1), angle - glm::radians(faceDir[curr]), glm::vec3(1, 0, 0)));
             faceDir[curr] = glm::degrees(angle);
+            velocity[curr] = newDir;
             
             //std::cout << "angle: " << angle << std::endl;
             world->draw(phongShader, glm::mat4(1));
         }
     }
     
-    for (auto bs : *lobby->getBS()) {
-        diff = bs->collide(astros[curr]->getBS());
+    for (auto bs : lobSpheres) {
+        diff = bs->collide(astroSpheres[curr]);
         //std::cout << "diff: " << diff << std::endl;
         if (diff <= 0) {
             newDir = handleBS(bs);
             newTrans = newDir * (0.01f - diff);
             astroMov[curr]->update(glm::translate(glm::mat4(1), newTrans));
             
-            if (abs(newDir.x) < 0.00001) angle = acos(newDir.z);
-            else angle = asin(newDir.x);
+            angle1 = asin(-newDir.y);
+            angle2 = acos(newDir.z);
+            if (abs(angle1 - angle2) < 0.1 || abs(angle1 + angle2) < 0.1) angle = angle1;
+            else angle = pi - angle1;
             
-            std::cout << "bs: " << faceDir[curr] << " " << diff << std::endl;
-            astroRot[curr]->update(glm::rotate(glm::mat4(1), angle - glm::radians(faceDir[curr]), glm::vec3(0, 1, 0)));
+            //std::cout << "bs: " << faceDir[curr] << " " << diff << std::endl;
+            astroRot[curr]->update(glm::rotate(glm::mat4(1), angle - glm::radians(faceDir[curr]), glm::vec3(1, 0, 0)));
             faceDir[curr] = glm::degrees(angle);
+            velocity[curr] = newDir;
             
-            std::cout << angle << " " << faceDir[curr] << std::endl;
+            //std::cout << angle << " " << faceDir[curr] << std::endl;
             world->draw(phongShader, glm::mat4(1));
         }
     }
@@ -614,19 +680,27 @@ void Window::handleCollision(int curr, bool initialize){
             if (initialize) break;
             continue;
         }
-        diff = astros[i]->getBS()->collide(astros[curr]->getBS());
+        diff = astroSpheres[i]->collide(astroSpheres[curr]);
         if (diff <= 0) {
-            newDir = handleBS(astros[i]->getBS());
-            astroMov[curr]->update(glm::translate(glm::mat4(1), newDir * (diff) + 0.01f));
-            angle = asin(newDir.x);
-            std::cout << "bs2: " << faceDir[curr] << " " << diff << std::endl;
-            astroRot[curr]->update(glm::rotate(glm::mat4(1), angle - glm::radians(faceDir[curr]), glm::vec3(0, 1, 0)));
-            faceDir[curr] = glm::degrees(angle);
+            newDir = handleBS(astroSpheres[i]);
+            newTrans = newDir * (0.01f - diff);
+            astroMov[curr]->update(glm::translate(glm::mat4(1), newTrans));
             
-            std::cout << angle << " " << faceDir[curr] << std::endl;
+            angle1 = asin(-newDir.y);
+            angle2 = acos(newDir.z);
+            if (abs(angle1 - angle2) < 0.1 || abs(angle1 + angle2) < 0.1) angle = angle1;
+            else angle = pi - angle1;
+            
+            //std::cout << "bs2: " << faceDir[curr] << " " << diff << std::endl;
+            astroRot[curr]->update(glm::rotate(glm::mat4(1), angle - glm::radians(faceDir[curr]), glm::vec3(1, 0, 0)));
+            faceDir[curr] = glm::degrees(angle);
+            velocity[curr] = newDir;
+            
+            //std::cout << angle << " " << faceDir[curr] << std::endl;
             world->draw(phongShader, glm::mat4(1));
         }
     }
+    
     //std::cout << faceDir[curr] << std::endl;
 }
 
@@ -634,47 +708,3 @@ void Window::move(int curr) {
     
 }
 
-
-/*
-void Window::control(int curr){
-    // resolve sphere-wall collisions
-    for (int i = 0; i < astroList.size(); i++) {
-        for (int j = 0; j < planeList.size(); j++) {
-            Transform* astroRot = (Transform*)astroList[i]->getChildren()[0];
-            Geometry* astro = (Geometry*)astroRot->getChildren()[0];
-            boundingSphere* astroSphere = astro->getSphere();
-
-            if (sphereToPlaneCollision(astroSphere, planeList[j])) {
-                if (astroRot != rotate_red) {
-                    glm::mat4 inverted = glm::inverse(astroRot->getMatrix());
-                    glm::vec3 direction = normalize(glm::vec3(inverted[2]));
-                    glm::vec3 planeNorm = planeList[j]->getNormal();
-                    glm::vec3 reflectDir = glm::reflect(direction, planeNorm);
-                    float reflectAngle = acos(glm::dot(direction, reflectDir) / (glm::length(direction) * glm::length(reflectDir)));
-                    astroRot->rotate(reflectAngle, glm::vec3(0, 1, 0));
-                }
-
-                float dist = glm::dot(astroSphere->getCenter(), planeList[j]->getNormal()) - glm::dot(planeList[j]->getOrigin(), planeList[j]->getNormal());
-                float travLength = astroSphere->getRadius() - dist + 0.1f;
-                astroList[i]->translate(travLength * planeList[j]->getNormal());
-            }
-        }
-    }
-}
-*/
-
-/*
- if (diff <= 0) {
-     glm::mat4 inverted = glm::inverse(astroRot[curr]->getMatrix());
-     glm::vec3 direction = normalize(glm::vec3(inverted[2]));
-     glm::vec3 planeNorm = bp->getNorm();
-     glm::vec3 reflectDir = glm::reflect(direction, planeNorm);
-     float reflectAngle = acos(glm::dot(direction, reflectDir) / (glm::length(direction) * glm::length(reflectDir)));
-     astroRot[curr]->update(glm::rotate(glm::mat4(1), reflectAngle, glm::vec3(0, 1, 0)));
-     float dist = glm::dot(astros[curr]->getBS()->getPos(), bp->getNorm()) - bp->getDist();
-     float travLength = astros[curr]->getBS()->getRadius() - dist + 0.1f;
-     astroMov[curr]->update(glm::translate(glm::mat4(1), travLength * planeNorm));
-     
-     world->draw(phongShader, glm::mat4(1));
- }
- */

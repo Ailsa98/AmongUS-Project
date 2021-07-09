@@ -13,7 +13,7 @@ private:
     std::vector<Geometry*> astro;
     int currAstro;
     
-    BoundingSphere * bs;
+    //BoundingSphere * bs;
     
 public:
     Astronaut() { return; };
@@ -26,7 +26,7 @@ public:
     void setColor(Material*& color);
     void useToon(bool use);
     void useAstro(int ind) { currAstro = ind; };
-    BoundingSphere* getBS() { return bs; };
+    //BoundingSphere* getBS() { return bs; };
 };
 
 #endif

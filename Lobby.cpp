@@ -2,6 +2,7 @@
 
 Lobby::Lobby(std::string directory) {
     lobby = new Geometry(directory + "amongus_lobby.obj");
+    /*
     top = new BoundingPlane(glm::vec3(0, 0, 1), glm::vec3(0, 0, 3));
     bottom = new BoundingPlane(glm::vec3(0, 0, -1), glm::vec3(0, 0, 20.5));
     left = new BoundingPlane(glm::vec3(1, 0, 0), glm::vec3(-16, 0, 0));
@@ -12,10 +13,12 @@ Lobby::Lobby(std::string directory) {
     bsRight = new BoundingSphere(2.5, glm::vec3(11, 0, 8));
     bPlanes = {top, bottom, left, right, ltCorner, rtCorner};
     bSpheres = {bsLeft, bsRight};
+     */
 }
 
 Lobby::~Lobby() {
     delete lobby;
+    /*
     delete top;
     delete bottom;
     delete left;
@@ -24,16 +27,19 @@ Lobby::~Lobby() {
     delete rtCorner;
     delete bsLeft;
     delete bsRight;
+     */
 }
 
 void Lobby::draw(GLuint shader, glm::mat4 C) {
     lobby->draw(shader, C);
+    /*
     for (auto bp : bPlanes) {
         bp->draw(C);
     }
     for (auto bs : bSpheres) {
         bs->draw(C);
     }
+     */
 }
 
 void Lobby::setColor(Material*& col) {

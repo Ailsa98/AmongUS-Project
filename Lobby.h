@@ -11,10 +11,12 @@ private:
     Geometry * lobby;
     
     // Bounding
+    /*
     std::vector<BoundingSphere*> bSpheres;
     std::vector<BoundingPlane*> bPlanes;
     BoundingSphere* bsLeft, *bsRight;
     BoundingPlane* top, *bottom, *left, *right, *ltCorner, *rtCorner;
+     */
     
 public:
     Lobby() { return; };
@@ -29,6 +31,7 @@ public:
     void setTexture(GLuint texId);
     void useTex(bool use);
     void useRef(bool use);
+    /*
     std::vector<BoundingSphere*> getBSpheres() { return bSpheres; };
     std::vector<BoundingPlane*> getBPlanes() { return bPlanes; };
     BoundingPlane * getTop() { return top; };
@@ -41,6 +44,7 @@ public:
     BoundingSphere * getBSRt() { return bsRight; };
     std::vector<BoundingPlane*> * getBP() { return &bPlanes; };
     std::vector<BoundingSphere*> * getBS() { return &bSpheres; };
+     */
 };
 
 #endif

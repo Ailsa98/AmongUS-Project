@@ -36,10 +36,6 @@ public:
     static std::vector<Transform*> astroRot;
     static std::vector<Transform*> astroMov;
     
-    // Cursor Movement
-    static float x;
-    static float trackMove;
-    
     // Trackball
     static bool leftPress;
     static glm::vec3 prevPos;
@@ -89,6 +85,7 @@ public:
     static std::vector<bool> isMove;
     static std::vector<glm::vec3> velocity;
     static int currAstro;
+    static GLfloat userSpeed;
     
     // bounds
     static std::vector<BoundingSphere*> astroSpheres;
