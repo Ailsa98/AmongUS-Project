@@ -5,7 +5,6 @@
 
 #include <glm/glm.hpp>
 #include <glm/gtx/transform.hpp>
-#include <vector>
 #include <stdio.h>
 
 
@@ -14,15 +13,16 @@ private:
     glm::mat4 T;
     glm::mat4 newT;
     std::vector<Node *> children;
+    std::vector<bool> display;
 
 public:
 	Transform(glm::mat4 M);
 	~Transform();
 
-    void draw(GLuint shaderProgram, glm::mat4 C);
+    void draw(glm::mat4 C);
     void update(glm::mat4 C);
     void addChild(Node * child);
-    glm::mat4 getMatrix(){ return newT; }
+    void displayToggle(int i, bool show) { display[i] = show; };
 };
 
 #endif

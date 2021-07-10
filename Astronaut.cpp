@@ -7,6 +7,8 @@ Astronaut::Astronaut(std::string directory) {
     astro = {astroStill, astroRight, astroLeft};
     currAstro = 0;
     
+    astroStill->update(glm::translate(glm::mat4(1), glm::vec3(0, 0.5, 0)));
+    
     // r = 10^-39 -> dist > r after a move
     //GLfloat r = astroStill->getMaxDist();
     //bs = new BoundingSphere(0.8);
@@ -19,8 +21,9 @@ Astronaut::~Astronaut() {
     //delete bs;
 }
 
-void Astronaut::draw(GLuint shader, glm::mat4 C) {
-    astro[currAstro]->draw(shader, C);
+void Astronaut::draw(glm::mat4 C) {
+    astro[currAstro]->setShader(shader);
+    astro[currAstro]->draw(C);
     //bs->draw(C);
 }
 

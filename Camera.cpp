@@ -17,7 +17,7 @@ void Camera::update(glm::mat4 C) {
     newView = glm::lookAt(eyePos, lookAtPoint, upVector);
 }
 
-void Camera::draw(GLuint shaderProgram, glm::mat4 C) {
+void Camera::draw(glm::mat4 C) {
     newEyePos = glm::vec3(C * glm::vec4(eyePos, 1));
     newLookPos = glm::vec3(C * glm::vec4(lookAtPoint, 1));
     newView = glm::lookAt(newEyePos, newLookPos, glm::vec3(0, 1, 0));

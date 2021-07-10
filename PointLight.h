@@ -20,7 +20,7 @@ public:
     PointLight(glm::vec3 color, glm::vec3 pos, float atten);
     ~PointLight();
 
-    void draw(GLuint shaderProgram, glm::mat4 C);
+    void draw(glm::mat4 C);
     void update(glm::mat4 C);
     void rotate(float rotAngle, glm::vec3 rotAxis);
     glm::vec3 getPos(){ return lightPosition; };

@@ -1,9 +1,7 @@
 #ifndef _GEOMETRY_H_
 #define _GEOMETRY_H_
 
-#include <vector>
 #include <string>
-#include <iostream>
 #include <fstream>
 #include <sstream>
 
@@ -55,7 +53,7 @@ public:
     Geometry(std::string objFilename);
     ~Geometry();
     
-    void draw(GLuint shader, glm::mat4 C);
+    void draw(glm::mat4 C);
     void update(glm::mat4 C) { model = C * model; };
     //unsigned int loadTexture(std::string filename);
     void setColor(Material*& color);

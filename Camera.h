@@ -16,7 +16,7 @@ public:
     Camera(glm::vec3 eye, glm::vec3 look, glm::vec3 up);
     ~Camera();
 
-    void draw(GLuint shaderProgram, glm::mat4 C);
+    void draw(glm::mat4 C);
     void update(glm::mat4 C);
     glm::vec3 getEyePos(){ return eyePos; };
     glm::vec3 getLookPos(){ return lookAtPoint; };

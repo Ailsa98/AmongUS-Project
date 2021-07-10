@@ -20,7 +20,7 @@ public:
     Astronaut(std::string objFilename);
     ~Astronaut();
     
-    void draw(GLuint shader, glm::mat4 C);
+    void draw(glm::mat4 C);
     void update(glm::mat4 C);
     //unsigned int loadTexture(std::string filename);
     void setColor(Material*& color);

@@ -8,12 +8,12 @@ DirectionalLight::~DirectionalLight() {
     
 }
 
-void DirectionalLight::draw(GLuint shaderProgram, glm::mat4 C) {
+void DirectionalLight::draw(glm::mat4 C) {
     glm::vec3 newDir = glm::vec3(C * glm::vec4(lightDirection, 1.0));
-    glUseProgram(shaderProgram);
-    glUniform3fv(glGetUniformLocation(shaderProgram, "light.lightCol"), 1, glm::value_ptr(lightColor));
-    glUniform3fv(glGetUniformLocation(shaderProgram, "light.direction"), 1, glm::value_ptr(newDir));
-    glUniform1i(glGetUniformLocation(shaderProgram, "lightSource"), 1);
+    glUseProgram(shader);
+    glUniform3fv(glGetUniformLocation(shader, "light.lightCol"), 1, glm::value_ptr(lightColor));
+    glUniform3fv(glGetUniformLocation(shader, "light.direction"), 1, glm::value_ptr(newDir));
+    glUniform1i(glGetUniformLocation(shader, "lightSource"), 1);
     glUseProgram(0);
 }
 

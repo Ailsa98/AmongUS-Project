@@ -12,12 +12,19 @@
 #include <glm/gtx/transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
+#include <vector>
+#include <iostream>
+
 class Node {
+    
+protected:
+    GLuint shader;
     
 public:
     virtual ~Node() {};
-    virtual void draw(GLuint shaderProgram, glm::mat4 C) = 0;
+    virtual void draw(glm::mat4 C) = 0;
     virtual void update(glm::mat4 C) = 0;
+    virtual void setShader(GLuint shaderProgram){ shader = shaderProgram; };
 };
 
 #endif

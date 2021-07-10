@@ -1,8 +1,4 @@
 #include "Transform.h"
-#include <fstream>
-#include <sstream>
-#include <iostream>
-#include "Window.h"
 
 Transform::Transform(glm::mat4 M) {
     T = M;
@@ -16,10 +12,10 @@ Transform::~Transform() {
     //delete this;
 }
 
-void Transform::draw(GLuint shaderProgram, glm::mat4 C) {
+void Transform::draw(glm::mat4 C) {
     newT = C * T;
     for (int i = 0; i < children.size(); i++){
-        children[i]->draw(shaderProgram, newT);
+        if (display[i]) children[i]->draw(newT);
     }
 }
 
@@ -29,4 +25,5 @@ void Transform::update(glm::mat4 C) {
 
 void Transform::addChild(Node* child) {
     children.push_back(child);
+    display.push_back(true);
 }

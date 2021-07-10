@@ -5,17 +5,17 @@
 
 #include "main.h"
 #include "shader.h"
-//#include "Skybox.h"
 #include "Transform.h"
 #include "Geometry.h"
 #include "Sphere.h"
-#include "PointLight.h"
+//#include "PointLight.h"
 #include "DirectionalLight.h"
 #include "Camera.h"
 #include "Astronaut.h"
-#include "Lobby.h"
+//#include "Lobby.h"
 #include "BoundingPlane.h"
 #include "BoundingSphere.h"
+#include "ParticleSystem.h"
 
 class Window {
 public:
@@ -25,7 +25,7 @@ public:
     static const char* windowTitle;
 
     // Objects to Render
-    static Lobby * lobby;
+    static Geometry * lobby;
     static std::vector<Astronaut*> astros;
     
     // Transforms
@@ -62,7 +62,7 @@ public:
     static std::vector<Material*> astroColors;
     
     // Light
-    static PointLight * ptLight;
+    //static PointLight * ptLight;
     static DirectionalLight * dirLight;
     
     // Projection matrix:
@@ -76,23 +76,33 @@ public:
 
     // Shader Program ID
     static GLuint phongShader;
-    static GLuint basicShader;
-    static GLuint skyboxShader;
+    static GLuint partShader;
     static GLuint refShader;
     
     // Movement handle
     static std::vector<GLfloat> faceDir;
-    static std::vector<bool> isMove;
     static std::vector<glm::vec3> velocity;
+    static std::vector<bool> isMove;
+    static std::vector<bool> isShown;
+    static std::vector<bool> useRight;
+    static std::vector<GLuint> cntFrame;
+    static std::vector<GLfloat> spawnTime;
+    static std::vector<GLfloat> pauseTime;
+    static std::vector<GLfloat> despawnTime;
+    static GLuint astroCnt;
     static int currAstro;
     static GLfloat userSpeed;
+    static GLfloat startTime;
     
-    // bounds
+    // Bounds
     static std::vector<BoundingSphere*> astroSpheres;
     static std::vector<BoundingPlane*> lobPlanes;
     static std::vector<BoundingSphere*> lobSpheres;
     static BoundingSphere* bsLeft, *bsRight;
     static BoundingPlane* top, *bottom, *left, *right, *ltCorner, *rtCorner;
+    
+    // Particles
+    static std::vector<ParticleSystem*> partSys;
 
     // Constructors and Destructors
     static bool initializeProgram();
@@ -122,7 +132,7 @@ public:
     static void handleCollision(int curr, bool initialize = false);
     
     // Movement
-    static void move(int curr);
+    static void npcMove(int i);
     
 };
 

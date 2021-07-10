@@ -269,7 +269,7 @@ Geometry::~Geometry() {
     glDeleteVertexArrays(1, &VAO);
 }
 
-void Geometry::draw(GLuint shader, glm::mat4 C) {
+void Geometry::draw(glm::mat4 C) {
     // Actiavte the shader program
     glUseProgram(shader);
     

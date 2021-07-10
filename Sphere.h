@@ -24,7 +24,6 @@ private:
     glm::mat4 newModel;
     
     unsigned int cubemapTexture;
-    GLuint refShader;
     
     int stackCount = 30;
     int sectorCount = 30;
@@ -33,9 +32,8 @@ private:
 public:
     Sphere();
     ~Sphere();
-    void draw(const GLuint shader, glm::mat4 C);
+    void draw(glm::mat4 C);
     void setTexture(unsigned int ID){ cubemapTexture = ID; };
-    void setShader(GLuint shader){ refShader = shader; };
     void spin(float deg);
     void setColor(glm::vec3 amb, glm::vec3 diff, glm::vec3 spec, float shin){ return; };
     void update(glm::mat4 C){ model = C * model; }

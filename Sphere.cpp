@@ -143,12 +143,12 @@ Sphere::~Sphere() {
     glDeleteVertexArrays(1, &VAO);
 }
 
-void Sphere::draw(const GLuint shader, glm::mat4 C) {
+void Sphere::draw(glm::mat4 C) {
     newModel = C * model;
     
-    glUseProgram(refShader);
-    glUniform1i(glGetUniformLocation(refShader, "Skybox"), 0);
-    glUniformMatrix4fv(glGetUniformLocation(refShader, "model"), 1, GL_FALSE, glm::value_ptr(newModel));
+    glUseProgram(shader);
+    glUniform1i(glGetUniformLocation(shader, "Skybox"), 0);
+    glUniformMatrix4fv(glGetUniformLocation(shader, "model"), 1, GL_FALSE, glm::value_ptr(newModel));
     
     //glDisable(GL_CULL_FACE);
     glEnable(GL_CULL_FACE);
