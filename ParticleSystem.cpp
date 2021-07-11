@@ -8,7 +8,7 @@ ParticleSystem::ParticleSystem(){
     particles.reserve(partNum);
     positions.assign(partNum, glm::vec3(0));
     for (int i = 0; i < partNum; ++i) {
-        velocity = (GLfloat) (rand() % 10) / 100.f;
+        velocity = (GLfloat) (rand() % 10) / 50.f;
         direction = glm::normalize(glm::vec3(rand() % 100 - 50, rand() % 100 - 50, rand() % 100 - 50));
         life = (GLfloat) (rand() % 10) / 10.f;
         particles.push_back(Particle(direction, velocity, life));
@@ -59,7 +59,7 @@ void ParticleSystem::draw(glm::mat4 C) {
     glBindVertexArray(VAO);
 
     // Set point size
-    glPointSize(3.0f);
+    glPointSize(5.0f);
 
     // Draw the points
     glDrawArrays(GL_POINTS, 0, partNum);

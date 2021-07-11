@@ -8,19 +8,16 @@
 
 /* Begin PBXBuildFile section */
 		4614ACB52683567D00131E49 /* Cube.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4614ACA72683567C00131E49 /* Cube.cpp */; };
-		4614ACB72683567D00131E49 /* PointCloud.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4614ACAD2683567D00131E49 /* PointCloud.cpp */; };
 		4614ACB82683567D00131E49 /* shader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4614ACAF2683567D00131E49 /* shader.cpp */; };
 		4614ACB92683567D00131E49 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4614ACB32683567D00131E49 /* main.cpp */; };
 		4614ACBE268358C600131E49 /* libglfw.3.3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 4614ACBD268358C600131E49 /* libglfw.3.3.dylib */; };
 		4614ACBF268358E200131E49 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4614ACBB268357C700131E49 /* OpenGL.framework */; };
-		4614ACC0268358E200131E49 /* OpenGL.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 4614ACBB268357C700131E49 /* OpenGL.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		4614ACC0268358E200131E49 /* OpenGL.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 4614ACBB268357C700131E49 /* OpenGL.framework */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		4614ACC2268358EA00131E49 /* libglfw.3.3.dylib in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 4614ACBD268358C600131E49 /* libglfw.3.3.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		462456B2268F593200DC9FB4 /* Geometry.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 46F7DA86268786F500D133E3 /* Geometry.cpp */; };
 		4640C7602697FC7A0065043D /* BoundingSphere.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4640C75E2697FC7A0065043D /* BoundingSphere.cpp */; };
 		4640C7612697FC7A0065043D /* BoundingPlane.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4640C75F2697FC7A0065043D /* BoundingPlane.cpp */; };
 		4640C76426982B520065043D /* ParticleSystem.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4640C76226982B520065043D /* ParticleSystem.cpp */; };
-		4640C77C269A0C400065043D /* libirrklang.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 4640C77B269A0C400065043D /* libirrklang.dylib */; };
-		4640C77F269A0E5E0065043D /* libirrklang.dylib in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 4640C77D269A0D680065043D /* libirrklang.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		4649BE8C268864A70077AC27 /* Sphere.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 46F7DA83268786F500D133E3 /* Sphere.cpp */; };
 		464A1238268CA82900E8090C /* PointLight.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 464A1237268CA82900E8090C /* PointLight.cpp */; };
 		464A123B268CB36D00E8090C /* Camera.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 464A123A268CB36D00E8090C /* Camera.cpp */; };
@@ -49,7 +46,6 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				4640C77F269A0E5E0065043D /* libirrklang.dylib in Embed Frameworks */,
 				4614ACC2268358EA00131E49 /* libglfw.3.3.dylib in Embed Frameworks */,
 				4614ACC0268358E200131E49 /* OpenGL.framework in Embed Frameworks */,
 			);
@@ -61,12 +57,10 @@
 /* Begin PBXFileReference section */
 		4614AC9D2683563700131E49 /* demo */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = demo; sourceTree = BUILT_PRODUCTS_DIR; };
 		4614ACA72683567C00131E49 /* Cube.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Cube.cpp; sourceTree = "<group>"; };
-		4614ACA82683567C00131E49 /* PointCloud.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PointCloud.h; sourceTree = "<group>"; };
 		4614ACA92683567D00131E49 /* main.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = main.h; sourceTree = "<group>"; };
 		4614ACAA2683567D00131E49 /* Cube.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Cube.h; sourceTree = "<group>"; };
 		4614ACAB2683567D00131E49 /* Window.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Window.cpp; sourceTree = "<group>"; };
 		4614ACAC2683567D00131E49 /* Window.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Window.h; sourceTree = "<group>"; };
-		4614ACAD2683567D00131E49 /* PointCloud.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PointCloud.cpp; sourceTree = "<group>"; };
 		4614ACAE2683567D00131E49 /* Object.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Object.h; sourceTree = "<group>"; };
 		4614ACAF2683567D00131E49 /* shader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = shader.cpp; sourceTree = "<group>"; };
 		4614ACB32683567D00131E49 /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
@@ -77,29 +71,6 @@
 		4640C75F2697FC7A0065043D /* BoundingPlane.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BoundingPlane.cpp; sourceTree = "<group>"; };
 		4640C76226982B520065043D /* ParticleSystem.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ParticleSystem.cpp; sourceTree = "<group>"; };
 		4640C76326982B520065043D /* ParticleSystem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ParticleSystem.h; sourceTree = "<group>"; };
-		4640C766269A0A470065043D /* ik_EStreamModes.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ik_EStreamModes.h; sourceTree = "<group>"; };
-		4640C767269A0A470065043D /* ik_vec3d.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ik_vec3d.h; sourceTree = "<group>"; };
-		4640C768269A0A470065043D /* ik_IVirtualRefCounted.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ik_IVirtualRefCounted.h; sourceTree = "<group>"; };
-		4640C769269A0A470065043D /* ik_ISoundMixedOutputReceiver.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ik_ISoundMixedOutputReceiver.h; sourceTree = "<group>"; };
-		4640C76A269A0A470065043D /* ik_IFileReader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ik_IFileReader.h; sourceTree = "<group>"; };
-		4640C76B269A0A470065043D /* ik_IRefCounted.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ik_IRefCounted.h; sourceTree = "<group>"; };
-		4640C76C269A0A470065043D /* ik_IAudioRecorder.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ik_IAudioRecorder.h; sourceTree = "<group>"; };
-		4640C76D269A0A470065043D /* ik_IAudioStream.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ik_IAudioStream.h; sourceTree = "<group>"; };
-		4640C76E269A0A470065043D /* ik_ISound.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ik_ISound.h; sourceTree = "<group>"; };
-		4640C76F269A0A470065043D /* irrKlang.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = irrKlang.h; sourceTree = "<group>"; };
-		4640C770269A0A470065043D /* ik_ISoundStopEventReceiver.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ik_ISoundStopEventReceiver.h; sourceTree = "<group>"; };
-		4640C771269A0A470065043D /* ik_ESoundOutputDrivers.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ik_ESoundOutputDrivers.h; sourceTree = "<group>"; };
-		4640C772269A0A470065043D /* ik_ISoundSource.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ik_ISoundSource.h; sourceTree = "<group>"; };
-		4640C773269A0A470065043D /* ik_IAudioStreamLoader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ik_IAudioStreamLoader.h; sourceTree = "<group>"; };
-		4640C774269A0A470065043D /* ik_ESoundEngineOptions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ik_ESoundEngineOptions.h; sourceTree = "<group>"; };
-		4640C775269A0A470065043D /* ik_irrKlangTypes.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ik_irrKlangTypes.h; sourceTree = "<group>"; };
-		4640C776269A0A470065043D /* ik_ISoundEffectControl.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ik_ISoundEffectControl.h; sourceTree = "<group>"; };
-		4640C777269A0A470065043D /* ik_ISoundDeviceList.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ik_ISoundDeviceList.h; sourceTree = "<group>"; };
-		4640C778269A0A470065043D /* ik_SAudioStreamFormat.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ik_SAudioStreamFormat.h; sourceTree = "<group>"; };
-		4640C779269A0A470065043D /* ik_IFileFactory.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ik_IFileFactory.h; sourceTree = "<group>"; };
-		4640C77A269A0A470065043D /* ik_ISoundEngine.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ik_ISoundEngine.h; sourceTree = "<group>"; };
-		4640C77B269A0C400065043D /* libirrklang.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libirrklang.dylib; path = "../irrKlang-64bit-1.6.0/bin/macosx-gcc/libirrklang.dylib"; sourceTree = "<group>"; };
-		4640C77D269A0D680065043D /* libirrklang.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libirrklang.dylib; sourceTree = "<group>"; };
 		464A1230268B26EE00E8090C /* Material.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Material.h; sourceTree = "<group>"; };
 		464A1237268CA82900E8090C /* PointLight.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PointLight.cpp; sourceTree = "<group>"; };
 		464A1239268CB36D00E8090C /* Camera.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Camera.h; sourceTree = "<group>"; };
@@ -110,7 +81,6 @@
 		464CB62D2690558500805F03 /* Astronaut.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Astronaut.cpp; sourceTree = "<group>"; };
 		464CB63026908B5900805F03 /* BoundingSphere.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BoundingSphere.h; sourceTree = "<group>"; };
 		464CB63126908B5900805F03 /* BoundingPlane.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BoundingPlane.h; sourceTree = "<group>"; };
-		469D5DA42686390F00BEADAD /* SpotLight.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SpotLight.h; sourceTree = "<group>"; };
 		469D5DA62686391000BEADAD /* PointLight.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PointLight.h; sourceTree = "<group>"; };
 		46DD97F7268359D2009F6CF5 /* shaders */ = {isa = PBXFileReference; lastKnownFileType = folder; path = shaders; sourceTree = "<group>"; };
 		46F7DA83268786F500D133E3 /* Sphere.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Sphere.cpp; sourceTree = "<group>"; };
@@ -132,7 +102,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4640C77C269A0C400065043D /* libirrklang.dylib in Frameworks */,
 				4614ACBE268358C600131E49 /* libglfw.3.3.dylib in Frameworks */,
 				4614ACBF268358E200131E49 /* OpenGL.framework in Frameworks */,
 			);
@@ -144,7 +113,6 @@
 		4614AC942683563700131E49 = {
 			isa = PBXGroup;
 			children = (
-				4640C77D269A0D680065043D /* libirrklang.dylib */,
 				4640C76226982B520065043D /* ParticleSystem.cpp */,
 				4640C76326982B520065043D /* ParticleSystem.h */,
 				4640C75E2697FC7A0065043D /* BoundingSphere.cpp */,
@@ -172,15 +140,12 @@
 				464A1239268CB36D00E8090C /* Camera.h */,
 				464A1237268CA82900E8090C /* PointLight.cpp */,
 				469D5DA62686391000BEADAD /* PointLight.h */,
-				469D5DA42686390F00BEADAD /* SpotLight.h */,
 				46DD97F7268359D2009F6CF5 /* shaders */,
 				4614ACA72683567C00131E49 /* Cube.cpp */,
 				4614ACAA2683567D00131E49 /* Cube.h */,
 				4614ACB32683567D00131E49 /* main.cpp */,
 				4614ACA92683567D00131E49 /* main.h */,
 				4614ACAE2683567D00131E49 /* Object.h */,
-				4614ACAD2683567D00131E49 /* PointCloud.cpp */,
-				4614ACA82683567C00131E49 /* PointCloud.h */,
 				4614ACAF2683567D00131E49 /* shader.cpp */,
 				4614ACB42683567D00131E49 /* shader.h */,
 				4614ACAB2683567D00131E49 /* Window.cpp */,
@@ -201,41 +166,10 @@
 		4614ACBA268357C700131E49 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				4640C77B269A0C400065043D /* libirrklang.dylib */,
-				4640C765269A0A470065043D /* include */,
 				4614ACBD268358C600131E49 /* libglfw.3.3.dylib */,
 				4614ACBB268357C700131E49 /* OpenGL.framework */,
 			);
 			name = Frameworks;
-			sourceTree = "<group>";
-		};
-		4640C765269A0A470065043D /* include */ = {
-			isa = PBXGroup;
-			children = (
-				4640C766269A0A470065043D /* ik_EStreamModes.h */,
-				4640C767269A0A470065043D /* ik_vec3d.h */,
-				4640C768269A0A470065043D /* ik_IVirtualRefCounted.h */,
-				4640C769269A0A470065043D /* ik_ISoundMixedOutputReceiver.h */,
-				4640C76A269A0A470065043D /* ik_IFileReader.h */,
-				4640C76B269A0A470065043D /* ik_IRefCounted.h */,
-				4640C76C269A0A470065043D /* ik_IAudioRecorder.h */,
-				4640C76D269A0A470065043D /* ik_IAudioStream.h */,
-				4640C76E269A0A470065043D /* ik_ISound.h */,
-				4640C76F269A0A470065043D /* irrKlang.h */,
-				4640C770269A0A470065043D /* ik_ISoundStopEventReceiver.h */,
-				4640C771269A0A470065043D /* ik_ESoundOutputDrivers.h */,
-				4640C772269A0A470065043D /* ik_ISoundSource.h */,
-				4640C773269A0A470065043D /* ik_IAudioStreamLoader.h */,
-				4640C774269A0A470065043D /* ik_ESoundEngineOptions.h */,
-				4640C775269A0A470065043D /* ik_irrKlangTypes.h */,
-				4640C776269A0A470065043D /* ik_ISoundEffectControl.h */,
-				4640C777269A0A470065043D /* ik_ISoundDeviceList.h */,
-				4640C778269A0A470065043D /* ik_SAudioStreamFormat.h */,
-				4640C779269A0A470065043D /* ik_IFileFactory.h */,
-				4640C77A269A0A470065043D /* ik_ISoundEngine.h */,
-			);
-			name = include;
-			path = "../irrKlang-64bit-1.6.0/include";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -299,7 +233,6 @@
 				462456B2268F593200DC9FB4 /* Geometry.cpp in Sources */,
 				464CB62E2690558500805F03 /* Astronaut.cpp in Sources */,
 				4614ACB82683567D00131E49 /* shader.cpp in Sources */,
-				4614ACB72683567D00131E49 /* PointCloud.cpp in Sources */,
 				4640C7602697FC7A0065043D /* BoundingSphere.cpp in Sources */,
 				464A123B268CB36D00E8090C /* Camera.cpp in Sources */,
 				4640C7612697FC7A0065043D /* BoundingPlane.cpp in Sources */,
