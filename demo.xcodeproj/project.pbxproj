@@ -93,7 +93,6 @@
 		46F7DA8C268786F600D133E3 /* Transform.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Transform.h; sourceTree = "<group>"; };
 		46F7DA8D268786F600D133E3 /* Geometry.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Geometry.h; sourceTree = "<group>"; };
 		46F7DA8E268786F600D133E3 /* Plane.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Plane.h; sourceTree = "<group>"; };
-		46F7DA8F2687870F00D133E3 /* skybox */ = {isa = PBXFileReference; lastKnownFileType = folder; path = skybox; sourceTree = "<group>"; };
 		46F7DA902687870F00D133E3 /* obj */ = {isa = PBXFileReference; lastKnownFileType = folder; path = obj; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -125,7 +124,6 @@
 				464CB62626900AE100805F03 /* DirectionalLight.h */,
 				464A1230268B26EE00E8090C /* Material.h */,
 				46F7DA902687870F00D133E3 /* obj */,
-				46F7DA8F2687870F00D133E3 /* skybox */,
 				46F7DA86268786F500D133E3 /* Geometry.cpp */,
 				46F7DA8D268786F600D133E3 /* Geometry.h */,
 				46F7DA87268786F500D133E3 /* Node.h */,
